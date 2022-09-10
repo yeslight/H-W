@@ -1,5 +1,4 @@
 #### ✏️
-- 07.30 不再更新
 - 06.26 固定版本selenium==4.2.0，原因 4.3.0 * Deprecated find_element_by_* and find_elements_by_* are now removed (#10712) https://github.com/SeleniumHQ/selenium/blob/a4995e2c096239b42c373f26498a6c9bb4f2b3e7/py/CHANGES
 
 #### ㊙️
