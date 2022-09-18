@@ -398,7 +398,6 @@ print('- loading...')
 
 options = uc.ChromeOptions()
 options.path = '/whatever'
-options.user_data_dir = '/whatever'
 options.add_argument('--no-sandbox')
 driver = uc.Chrome(use_subprocess=True, options=options)
 driver.set_window_size(785, 627)
