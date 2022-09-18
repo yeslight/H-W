@@ -27,6 +27,8 @@ jobs:
             pip3 install undetected-chromedriver
             yes | pip3 uninstall selenium
             pip3 install selenium==4.2.0
+            sudo ln -s /usr/local/share/chrome_driver /usr/local/bin/chromedriver
+            sudo ln -s /usr/local/share/chrome_driver /usr/bin/chromedriver
             
         - name: 'Renew'
           env:
