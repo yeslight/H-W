@@ -26,9 +26,9 @@ jobs:
             sudo apt-get --only-upgrade -y install google-chrome-stable
             cd /usr/local/share/chrome_driver
             rm -f chrome_driver
-            sudo wget -P /root -N https://chromedriver.storage.googleapis.com/105.0.5195.52/chromedriver_linux64.zip
-            sudo unzip /root/chromedriver_linux64.zip
-            yes | cp -r /root/chromedriver /usr/bin/chromedriver
+            cd /usr/bin
+            sudo wget -N https://chromedriver.storage.googleapis.com/105.0.5195.52/chromedriver_linux64.zip
+            sudo unzip -o chromedriver_linux64.zip
             sudo chmod +x /usr/bin/chromedriver
 
             
