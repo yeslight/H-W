@@ -310,10 +310,15 @@ def extendResult():
         textList = find_all(S('#response'))
         result = [key.web_element.text for key in textList][0]
         # checkResult(result)
-        if 'Robot verification failed' in result:
+        i = 0
+        while 'renewed' not in result:
+            i = i + 1
+            if i > 10:
+                push(result)
+                break
             print('*** %s ***' % result)
             renewVPS()
-        elif 'renewed' in result:
+        if 'renewed' in result:
             result = '!' + result
             print(result)
             push(result)
