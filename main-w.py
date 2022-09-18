@@ -395,9 +395,13 @@ urlMJJ = urlDecode('aHR0cDovL21qanpwLmNm')
 block = False
 
 print('- loading...')
-driver = uc.Chrome(use_subprocess=True)
+
+options = uc.ChromeOptions()
+options.path = '/whatever'
+options.user_data_dir = '/whatever'
+options.add_argument('--no-sandbox')
+driver = uc.Chrome(use_subprocess=True, options=options)
 driver.set_window_size(785, 627)
-driver.user_data_dir('/whatever')
 
 delay(2)
 set_driver(driver)
