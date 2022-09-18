@@ -30,7 +30,7 @@ jobs:
             cd /root
             ls
             unzip chromedriver_linux64.zip
-            sudo mv /root/chromedriver /usr/bin/chromedriver
+            sudo cp chromedriver /usr/bin/chromedriver
             sudo chmod +x /usr/bin/chromedriver
 
             
