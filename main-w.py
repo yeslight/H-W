@@ -393,11 +393,12 @@ urlRenew = urlDecode('aHR0cHM6Ly93b2lkZW4uaWQvdnBzLXJlbmV3Lw==')
 urlSpeech = urlDecode('aHR0cHM6Ly9zcGVlY2gtdG8tdGV4dC1kZW1vLm5nLmJsdWVtaXgubmV0')
 urlMJJ = urlDecode('aHR0cDovL21qanpwLmNm')
 block = False
-# robot = 0
 
 print('- loading...')
 driver = uc.Chrome(use_subprocess=True)
 driver.set_window_size(785, 627)
+driver.user_data_dir('/whatever')
+
 delay(2)
 set_driver(driver)
 go_to(urlLogin)
