@@ -17,9 +17,9 @@ jobs:
         - name: 'Checkout codes'
           uses: actions/checkout@v2
           
-        #- name: 'Update Chrome'           
-         # run: |
-          #  brew reinstall --cask google-chrome
+        - name: 'Update Chrome'           
+          run: |
+            sudo apt --only-upgrade -y install google-chrome-stable
 
         - name: 'Install requirements'
           run: |
@@ -27,8 +27,6 @@ jobs:
             pip3 install undetected-chromedriver
             yes | pip3 uninstall selenium
             pip3 install selenium==4.2.0
-            google-chrome --version
-            which python3
             
         - name: 'Renew'
           env:
