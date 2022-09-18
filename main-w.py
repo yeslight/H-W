@@ -396,7 +396,9 @@ block = False
 # robot = 0
 
 print('- loading...')
-driver = uc.Chrome(executable_path='/usr/bin/chromedriver', use_subprocess=True)
+#driver = uc.Chrome(executable_path='/usr/bin/chromedriver', use_subprocess=True)
+driver = uc.Chrome()
+
 driver.set_window_size(785, 627)
 delay(2)
 set_driver(driver)
