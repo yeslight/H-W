@@ -28,6 +28,7 @@ jobs:
             yes | pip3 uninstall selenium
             pip3 install selenium==4.2.0
             google-chrome --version
+            which python3
             
         - name: 'Renew'
           env:
