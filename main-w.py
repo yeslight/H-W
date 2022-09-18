@@ -396,10 +396,10 @@ block = False
 
 print('- loading...')
 
-options = uc.ChromeOptions()
-options.path = '/whatever'
-options.add_argument('--no-sandbox')
-driver = uc.Chrome(use_subprocess=True, options=options)
+# options = uc.ChromeOptions()
+# options.path = '/whatever'
+# options.add_argument('--no-sandbox')
+driver = uc.Chrome(use_subprocess=True)
 driver.set_window_size(785, 627)
 
 delay(2)
