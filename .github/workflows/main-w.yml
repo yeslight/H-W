@@ -37,9 +37,9 @@ jobs:
           run: |
             pip3 install -r ./requirements.txt
             pip3 install undetected-chromedriver
-            yes | pip3 uninstall selenium
+            pip3 uninstall -y selenium
             pip3 install selenium==4.2.0
-            yes | pip3 install --upgrade requests
+            pip3 install -y --upgrade requests
 
             
         - name: 'Renew'
