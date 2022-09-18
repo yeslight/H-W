@@ -10,20 +10,27 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     #runs-on: macos-12
 
     steps:
         - name: 'Checkout codes'
           uses: actions/checkout@v2
           
-        - name: 'Update Chrome'           
+        - name: 'Update Chrome & Driver'           
           run: |
             sudo apt-get remove google-chrome*
             wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
             echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list
             sudo apt-get update 
             sudo apt-get --only-upgrade -y install google-chrome-stable
+            cd /usr/local/share/chrome_driver
+            rm -f chrome_driver
+            wget -N https://chromedriver.storage.googleapis.com/105.0.5195.52/chromedriver_linux64.zip
+            unzip chromedriver_linux64.zip
+            cp chromedriver /usr/bin/chromedriver
+
+            
 
         - name: 'Install requirements'
           run: |
