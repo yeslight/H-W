@@ -124,7 +124,7 @@ def getAudioLink():
     elif Text('Try again later').exists() or Text('稍后重试').exists():
         textblock = S('.rc-doscaptcha-body-text').web_element.text
         print(textblock)
-        body = ' *** 💣 Possibly blocked by google! ***\n' + textblock
+        body = ' *** Possibly blocked by google! ***\n' + textblock
         push(body)
         block = True
 
@@ -209,7 +209,7 @@ def submit():
         print('- submit clicked')
         delay(2)
     except Exception as e:
-        print('*** 💣 some error in func submit!, stop running ***\nError:', e)
+        print('*** some error in func submit!, stop running ***\nError:', e)
 
     cloudflareDT()
 
@@ -228,7 +228,7 @@ def submit():
         print('- VPS Information found!')
         renewVPS()
     except Exception as e:
-        body = '*** 💣 some error in func submit!, stop running ***'
+        body = '*** some error in func submit!, stop running ***'
         print('Error:', e)
         screenshot()  # debug
         sys.exit(body)
@@ -255,7 +255,7 @@ def screenshot():  # debug
     # textList = find_all(S('#code-url'))
     # result = [key.web_element.text for key in textList][0]
     result = S('#code-url').web_element.text
-    print('*** 📷 capture src:', result)
+    print('*** capture src:', result)
     driver.close()
     # driver.switch_to.window(driver.window_handles[0])
 
@@ -297,7 +297,7 @@ def renewVPS():
             click('Renew VPS')
         extendResult()
     else:
-        print(' *** 💣 some error in func renew!, stop running ***')
+        print(' *** some error in func renew!, stop running ***')
         # screenshot()
 
 
@@ -314,11 +314,11 @@ def extendResult():
             print('*** %s ***' % result)
             renewVPS()
         elif 'renewed' in result:
-            result = '🎉 ' + result
+            result = '!' + result
             print(result)
             push(result)
     else:
-        print(' *** 💣 some error in func renew!, stop running ***')
+        print(' *** some error in func renew!, stop running ***')
         screenshot()
         # renewVPS()
     # return result
