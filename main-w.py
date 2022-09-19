@@ -285,9 +285,8 @@ def renewVPS():
             if block:
                 textList = find_all(S('.rc-doscaptcha-body-text'))
                 result = [key.web_element.text for key in textList][0]
-                body = '*** Possibly blocked by google! ***'
-                print(body, '\n', result)
-                push(body)
+                print(result)
+                
             else:
                 click('Renew VPS')
         else:
@@ -303,29 +302,29 @@ def extendResult():
     global count
     print('- waiting for extend result response')
     delay(10)
-    if S('#response').exists():
-        # 向下滚动
-        scroll_down(num_pixels=300)
-        textList = find_all(S('#response'))
-        result = [key.web_element.text for key in textList][0]
-        # checkResult(result)
-        while 'renewed' not in result:
-            count = count + 1
-            print('count:', count)
-            if count > 10:
+    try:
+        if S('#response').exists():
+            # 向下滚动
+            scroll_down(num_pixels=300)
+            textList = find_all(S('#response'))
+            result = [key.web_element.text for key in textList][0]
+            # checkResult(result)
+            while 'renewed' not in result:
+                count = count + 1
+                print('count:', count)
+                if count > 10:
+                    push(result)
+                    break
+                print('*** result: %s ***' % result)
+                renewVPS()
+            if 'renewed' in result:
+                result = '!' + result
+                print(result)
                 push(result)
-                break
-            print('*** result: %s ***' % result)
-            renewVPS()
-        if 'renewed' in result:
-            result = '!' + result
-            print(result)
-            push(result)
-    else:
-        print(' *** some error in func renew!, stop running ***')
+    except Exception as e:
+        print('Error:', e)
+        push(e)
         screenshot()
-        # renewVPS()
-    # return result
 
 
 def push(body):
