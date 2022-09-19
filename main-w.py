@@ -313,10 +313,12 @@ def extendResult():
         i = 0
         while 'renewed' not in result:
             i = i + 1
+            print('i:', i)
             if i > 10:
+                print('i?:', i)
                 push(result)
                 break
-            print('*** %s ***' % result)
+            print('*** result: %s ***' % result)
             renewVPS()
         if 'renewed' in result:
             result = '!' + result
