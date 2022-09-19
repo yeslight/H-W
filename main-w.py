@@ -314,7 +314,7 @@ def extendResult():
         # checkResult(result)
         while 'renewed' not in result:
             count = count + 1
-            print('count:', i)
+            print('count:', count)
             if count > 10:
                 push(result)
                 break
