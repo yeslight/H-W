@@ -124,7 +124,7 @@ def getAudioLink():
     elif Text('Try again later').exists() or Text('稍后重试').exists():
         textblock = S('.rc-doscaptcha-body-text').web_element.text
         print(textblock)
-        body = ' *** Possibly blocked by google! ***\n' + textblock
+        body = ' *** 💣 Possibly blocked by google! ***\n' + textblock
         push(body)
         block = True
 
@@ -196,9 +196,10 @@ def login():
         if block:
             print('*** Possibly blocked by google! ***')
         else:
-            pass
+            submit()
     else:
         print('- reCAPTCHA not found!')
+        submit()
 
 
 def submit():
@@ -208,7 +209,7 @@ def submit():
         print('- submit clicked')
         delay(2)
     except Exception as e:
-        print('*** some error in func submit!, stop running ***\nError:', e)
+        print('*** 💣 some error in func submit!, stop running ***\nError:', e)
 
     cloudflareDT()
 
@@ -225,8 +226,9 @@ def submit():
     try:
         wait_until(Text('VPS Information').exists)
         print('- VPS Information found!')
+        renewVPS()
     except Exception as e:
-        body = '*** some error in func submit!, stop running ***'
+        body = '*** 💣 some error in func submit!, stop running ***'
         print('Error:', e)
         screenshot()  # debug
         sys.exit(body)
@@ -253,7 +255,7 @@ def screenshot():  # debug
     # textList = find_all(S('#code-url'))
     # result = [key.web_element.text for key in textList][0]
     result = S('#code-url').web_element.text
-    print('*** capture src:', result)
+    print('*** 📷 capture src:', result)
     driver.close()
     # driver.switch_to.window(driver.window_handles[0])
 
@@ -285,46 +287,41 @@ def renewVPS():
             if block:
                 textList = find_all(S('.rc-doscaptcha-body-text'))
                 result = [key.web_element.text for key in textList][0]
-                print(result)
-                
+                body = '*** Possibly blocked by google! ***'
+                print(body, '\n', result)
+                push(body)
             else:
                 click('Renew VPS')
         else:
             print('- reCAPTCHA not found!')
             click('Renew VPS')
+        extendResult()
     else:
-        print(' *** some error in func renew!, stop running ***')
-        push('*** some error in func renew!, stop running ***')
+        print(' *** 💣 some error in func renew!, stop running ***')
         # screenshot()
 
 
 def extendResult():
-    global count
     print('- waiting for extend result response')
     delay(10)
-    try:
-        #if S('#response').exists():
+    if S('#response').exists():
         # 向下滚动
         scroll_down(num_pixels=300)
         textList = find_all(S('#response'))
         result = [key.web_element.text for key in textList][0]
         # checkResult(result)
-        while 'renewed' not in result:
-            count = count + 1
-            print('count:', count)
-            if count > 10:
-                push(result)
-                break
-            print('*** result: %s ***' % result)
+        if 'Robot verification failed' in result:
+            print('*** %s ***' % result)
             renewVPS()
-        if 'renewed' in result:
-            result = '!' + result
+        elif 'renewed' in result:
+            result = '🎉 ' + result
             print(result)
             push(result)
-    except Exception as e:
-        print('Error:', e)
-        push(e)
+    else:
+        print(' *** 💣 some error in func renew!, stop running ***')
         screenshot()
+        # renewVPS()
+    # return result
 
 
 def push(body):
@@ -396,18 +393,12 @@ urlRenew = urlDecode('aHR0cHM6Ly93b2lkZW4uaWQvdnBzLXJlbmV3Lw==')
 urlSpeech = urlDecode('aHR0cHM6Ly9zcGVlY2gtdG8tdGV4dC1kZW1vLm5nLmJsdWVtaXgubmV0')
 urlMJJ = urlDecode('aHR0cDovL21qanpwLmNm')
 block = False
-count = 0
-print('- loading...')
+# robot = 0
 
-# options = uc.ChromeOptions()
-# options.path = '/whatever'
-# options.add_argument('--no-sandbox')
+print('- loading...')
 driver = uc.Chrome(use_subprocess=True)
 driver.set_window_size(785, 627)
-
 delay(2)
 set_driver(driver)
 go_to(urlLogin)
 login()
-renewVPS()
-extendResult()
