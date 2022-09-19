@@ -298,10 +298,12 @@ def renewVPS():
         extendResult()
     else:
         print(' *** some error in func renew!, stop running ***')
+        push('*** some error in func renew!, stop running ***')
         # screenshot()
 
 
 def extendResult():
+    global count
     print('- waiting for extend result response')
     delay(10)
     if S('#response').exists():
@@ -310,12 +312,10 @@ def extendResult():
         textList = find_all(S('#response'))
         result = [key.web_element.text for key in textList][0]
         # checkResult(result)
-        i = 0
         while 'renewed' not in result:
-            i = i + 1
-            print('i:', i)
-            if i > 10:
-                print('i?:', i)
+            count = count + 1
+            print('count:', i)
+            if count > 10:
                 push(result)
                 break
             print('*** result: %s ***' % result)
@@ -400,7 +400,7 @@ urlRenew = urlDecode('aHR0cHM6Ly93b2lkZW4uaWQvdnBzLXJlbmV3Lw==')
 urlSpeech = urlDecode('aHR0cHM6Ly9zcGVlY2gtdG8tdGV4dC1kZW1vLm5nLmJsdWVtaXgubmV0')
 urlMJJ = urlDecode('aHR0cDovL21qanpwLmNm')
 block = False
-
+count = 0
 print('- loading...')
 
 # options = uc.ChromeOptions()
