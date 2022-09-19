@@ -196,10 +196,9 @@ def login():
         if block:
             print('*** Possibly blocked by google! ***')
         else:
-            submit()
+            pass
     else:
         print('- reCAPTCHA not found!')
-        submit()
 
 
 def submit():
@@ -226,7 +225,6 @@ def submit():
     try:
         wait_until(Text('VPS Information').exists)
         print('- VPS Information found!')
-        renewVPS()
     except Exception as e:
         body = '*** some error in func submit!, stop running ***'
         print('Error:', e)
@@ -295,7 +293,6 @@ def renewVPS():
         else:
             print('- reCAPTCHA not found!')
             click('Renew VPS')
-        extendResult()
     else:
         print(' *** some error in func renew!, stop running ***')
         push('*** some error in func renew!, stop running ***')
@@ -413,3 +410,5 @@ delay(2)
 set_driver(driver)
 go_to(urlLogin)
 login()
+renewVPS()
+extendResult()
