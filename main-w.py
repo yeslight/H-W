@@ -64,6 +64,9 @@ def speechToText():
     delay(2)
     driver.switch_to.window(driver.window_handles[1])
     set_driver(driver)
+    
+    scroll_down(num_pixels=1500)
+
     text = ''
     i = 0
     #while text == '':
@@ -174,6 +177,8 @@ def login():
 
     #scrollDown('@login')
     #scrollDown('.btn btn-primary')
+    
+    scroll_down(num_pixels=1000)
 
     print('- fill user id')
     if USER_ID == '':
@@ -246,9 +251,9 @@ def screenshot():  # debug
     # driver.execute_script('''window.open('http://mjjzp.cf/',"_blank")''')
     driver.switch_to.window(driver.window_handles[1])
     # switch_to('白嫖图床')
-    delay(2)
+    delay(5)
     driver.find_element(By.ID, 'image').send_keys(os.getcwd() + imgFile)
-    delay(4)
+    delay(5)
     click('上传')
     wait_until(Text('完成').exists)
     print('- upload done')
