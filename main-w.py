@@ -7,9 +7,9 @@ import ssl
 import sys
 import time
 import urllib
-
 import requests
 import undetected_chromedriver as uc
+
 from helium import *
 from selenium.webdriver.common.by import By
 
@@ -80,6 +80,12 @@ def speechToText():
         delay(6)
         driver.switch_to.window(driver.window_handles[1])
         set_driver(driver)
+        try:
+            driver.switch_to.alert()
+            Alert.accept()
+            print('- Alert accept')
+        except:
+            pass
         textlist = find_all(S('.tab-panels--tab-content'))
         text = [key.web_element.text for key in textlist][0]
         print('- get text:', text)
@@ -99,7 +105,11 @@ def getAudioLink():
         print('- get src:', src)
 
         # 下载音频文件
-        urllib.request.urlretrieve(src, os.getcwd() + audioFile)
+        try:
+            urllib.request.urlretrieve(src, os.getcwd() + audioFile)
+        except Exception as e:
+            print('getAudioLink function Error: %s \n try again' % e)
+            urllib.request.urlretrieve(src, os.getcwd() + audioFile)
         delay(4)
         text = speechToText()
         print('- waiting for switch to first window')
@@ -126,7 +136,7 @@ def getAudioLink():
 
     elif Text('Try again later').exists() or Text('稍后重试').exists():
         textblock = S('.rc-doscaptcha-body-text').web_element.text
-        print(textblock)
+        #print(textblock)
         body = ' *** 💣 Possibly blocked by google! ***\n' + textblock
         push(body)
         block = True
@@ -192,10 +202,9 @@ def login():
         kill_browser()
     else:
         write(PASS_WD, into=S('@password'))
-
-    # if Text('reCAPTCHA').exists():
-    if Text('I\'m not a robot').exists() or Text('我不是机器人').exists():
-        # if S('#recaptcha-token').exists():
+    delay(5)
+    if Text('reCAPTCHA').exists() or Text('Recaptcha').exists():
+    # if Text('I\'m not a robot').exists() or Text('我不是机器人').exists():
         print('- reCAPTCHA found!')
         block = reCAPTCHA()
         if block:
@@ -217,7 +226,7 @@ def submit():
         print('*** 💣 some error in func submit!, stop running ***\nError:', e)
 
     cloudflareDT()
-
+    scroll_down(num_pixels=600)
     try:
         wait_until(Text('Please correct your captcha!.').exists)
         print('*** Network issue maybe, reCAPTCHA load fail! ***')
@@ -231,12 +240,12 @@ def submit():
     try:
         wait_until(Text('VPS Information').exists)
         print('- VPS Information found!')
-        renewVPS()
     except Exception as e:
         body = '*** 💣 some error in func submit!, stop running ***'
-        print('Error:', e)
+        print('submit Error:', e)
         screenshot()  # debug
         sys.exit(body)
+    renewVPS()
 
 
 def delay(i):
@@ -266,7 +275,7 @@ def screenshot():  # debug
 
 
 def renewVPS():
-    global block
+    global block, renew
     print('- renew VPS')
     go_to(urlRenew)
     delay(1)
@@ -285,22 +294,34 @@ def renewVPS():
         print('- check agreement')
         scrollDown('@agreement')
         click(S('@agreement'))
-        # if Text('reCAPTCHA').exists():
-        if Text('I\'m not a robot').exists() or Text('我不是机器人').exists():
-            print('- reCAPTCHA found!')
-            block = reCAPTCHA()
-            if block:
-                textList = find_all(S('.rc-doscaptcha-body-text'))
-                result = [key.web_element.text for key in textList][0]
-                body = '*** Possibly blocked by google! ***'
-                print(body, '\n', result)
-                push(body)
-            else:
-                click('Renew VPS')
-        else:
-            print('- reCAPTCHA not found!')
-            click('Renew VPS')
-        extendResult()
+        delay(1)
+        click('Renew VPS')
+        # if Text('reCAPTCHA').exists() or Text('Recaptcha').exists():
+        # #if Text('I\'m not a robot').exists() or Text('我不是机器人').exists():
+        #     print('- reCAPTCHA found!')
+        #     block = reCAPTCHA()
+        #     if block:
+        #         textList = find_all(S('.rc-doscaptcha-body-text'))
+        #         result = [key.web_element.text for key in textList][0]
+        #         body = '*** Possibly blocked by google! ***'
+        #         print(body, '\n', result)
+        #         push(body)
+        #     else:
+        #         click('Renew VPS')
+        # else:
+        #     print('- reCAPTCHA not found!')
+        #     click('Renew VPS')
+        result = str(extendResult())
+        #print('result:', result)
+        if 'Robot verification failed' in result:
+            while renew < 10:
+                renew = renew+1
+                print('*** %s %d ***' % (result, renew))
+                renewVPS()
+        elif 'renewed' in result:
+            result = '🎉 ' + result
+            print(result)
+        push(result)
     else:
         print(' *** 💣 some error in func renew!, stop running ***')
         # screenshot()
@@ -308,29 +329,32 @@ def renewVPS():
 
 def extendResult():
     print('- waiting for extend result response')
-    delay(10)
-    if S('#response').exists():
-        # 向下滚动
-        scroll_down(num_pixels=300)
+    delay(5)
+    scroll_down(num_pixels=600)
+    #if S('#response').exists():
+    try:
         textList = find_all(S('#response'))
         result = [key.web_element.text for key in textList][0]
-        # checkResult(result)
-        if 'Robot verification failed' in result:
-            print('*** %s ***' % result)
-            renewVPS()
-        elif 'renewed' in result:
-            result = '🎉 ' + result
-            print(result)
-            push(result)
-    else:
-        print(' *** 💣 some error in func renew!, stop running ***')
+        #print('extendResult:', result)
+        delay(1)
+        # # checkResult(result)
+        # if 'Robot verification failed' in result:
+        #     print('*** %s ***' % result)
+        #     renewVPS()
+        # elif 'renewed' in result:
+        #     result = '🎉 ' + result
+        #     print(result)
+        #     push(result)
+        return result
+    except Exception as e:
+        print('extendResult Error:', e)
         screenshot()
         # renewVPS()
     # return result
 
 
 def push(body):
-    print('- waiting for push result')
+    print('- body: %s \n- waiting for push result' % body)
     # bark push
     if BARK_KEY == '':
         print('*** No BARK_KEY ***')
@@ -398,12 +422,12 @@ urlRenew = urlDecode('aHR0cHM6Ly93b2lkZW4uaWQvdnBzLXJlbmV3Lw==')
 urlSpeech = urlDecode('aHR0cHM6Ly9zcGVlY2gtdG8tdGV4dC1kZW1vLm5nLmJsdWVtaXgubmV0')
 urlMJJ = urlDecode('aHR0cDovL21qanpwLmNm')
 block = False
-# robot = 0
+renew = 0
 
 print('- loading...')
 driver = uc.Chrome(use_subprocess=True)
 driver.set_window_size(785, 627)
-delay(2)
 set_driver(driver)
 go_to(urlLogin)
+delay(1)
 login()
