@@ -208,6 +208,7 @@ def login():
 
 
 def submit():
+    global body
     print('- submit')
     try:
         click('Submit')
@@ -235,8 +236,7 @@ def submit():
     except Exception as e:
         print('submit Error:', e)
         screenshot()  # debug
-        push(e)
-
+        body = e
 
 def delay(i):
     time.sleep(i)
@@ -259,6 +259,7 @@ def screenshot():  # debug
     # result = [key.web_element.text for key in textList][0]
     result = S('#code-url').web_element.text
     print('*** 📷 capture src:', result)
+    push(result)
     driver.close()
     # driver.switch_to.window(driver.window_handles[0])
 
