@@ -17,9 +17,9 @@ jobs:
         - name: 'Checkout codes'
           uses: actions/checkout@v2
           
-#        - name: 'Update Chrome'
-#          run: |
-#            brew reinstall --cask google-chrome
+        - name: 'Update Chrome'
+          run: |
+            brew reinstall --cask google-chrome
 
         - name: 'Install requirements'
           run: |
