@@ -1,10 +1,10 @@
-name: 'H-Extend'
+name: 'W-Extend'
 
 on:
   #push:
   schedule:
     # UTC (国内 UTC+8)
-     - cron: '50 4 * * *'
+     - cron: '03 8 * * *'
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -17,7 +17,7 @@ jobs:
         - name: 'Checkout codes'
           uses: actions/checkout@v2
           
-        - name: 'Update Chrome'           
+        - name: 'Update Chrome'
           run: |
             brew reinstall --cask google-chrome
 
@@ -37,4 +37,4 @@ jobs:
             TG_USER_ID: ${{ secrets.TG_USER_ID }}
 
           run: |
-            python3 ./main-h.py
+            python3 ./main-w.py
