@@ -64,9 +64,7 @@ def speechToText():
     delay(2)
     driver.switch_to.window(driver.window_handles[1])
     set_driver(driver)
-    
     scroll_down(num_pixels=1500)
-
     text = ''
     i = 0
     #while text == '':
@@ -103,7 +101,6 @@ def getAudioLink():
         except:
             src = Link('或者以 MP3 格式下载音频').href
         print('- get src:', src)
-
         # 下载音频文件
         try:
             urllib.request.urlretrieve(src, os.getcwd() + audioFile)
@@ -113,7 +110,6 @@ def getAudioLink():
         delay(4)
         text = speechToText()
         print('- waiting for switch to first window')
-
         # 切回第一个 tab
         # driver = get_driver()
         driver.switch_to.window(driver.window_handles[0])
@@ -147,7 +143,6 @@ def getAudioLink():
 
     else:
         print('*** audio download element not found, stop running ***')
-        # print('- title:', Window().title)
         # screenshot() # debug
 
 
@@ -184,12 +179,7 @@ def login():
     delay(1)
     # CF
     cloudflareDT()
-
-    #scrollDown('@login')
-    #scrollDown('.btn btn-primary')
-    
     scroll_down(num_pixels=1000)
-
     print('- fill user id')
     if USER_ID == '':
         print('*** USER_ID is empty ***')
@@ -211,6 +201,7 @@ def login():
             print('*** Possibly blocked by google! ***')
         else:
             submit()
+
     else:
         print('- reCAPTCHA not found!')
         submit()
@@ -240,12 +231,11 @@ def submit():
     try:
         wait_until(Text('VPS Information').exists)
         print('- VPS Information found!')
+        renewVPS()
     except Exception as e:
-        body = '*** 💣 some error in func submit!, stop running ***'
         print('submit Error:', e)
         screenshot()  # debug
-        sys.exit(body)
-    renewVPS()
+        push(e)
 
 
 def delay(i):
@@ -259,7 +249,6 @@ def screenshot():  # debug
     driver.tab_new(urlMJJ)
     # driver.execute_script('''window.open('http://mjjzp.cf/',"_blank")''')
     driver.switch_to.window(driver.window_handles[1])
-    # switch_to('白嫖图床')
     delay(5)
     driver.find_element(By.ID, 'image').send_keys(os.getcwd() + imgFile)
     delay(5)
@@ -275,14 +264,12 @@ def screenshot():  # debug
 
 
 def renewVPS():
-    global block, renew
+    global renew, body
     print('- renew VPS')
     go_to(urlRenew)
     delay(1)
     cloudflareDT()
-
     scrollDown('@submit_button')
-
     delay(1)
     if S('#web_address').exists():
         print('- fill web address')
@@ -296,32 +283,16 @@ def renewVPS():
         click(S('@agreement'))
         delay(1)
         click('Renew VPS')
-        # if Text('reCAPTCHA').exists() or Text('Recaptcha').exists():
-        # #if Text('I\'m not a robot').exists() or Text('我不是机器人').exists():
-        #     print('- reCAPTCHA found!')
-        #     block = reCAPTCHA()
-        #     if block:
-        #         textList = find_all(S('.rc-doscaptcha-body-text'))
-        #         result = [key.web_element.text for key in textList][0]
-        #         body = '*** Possibly blocked by google! ***'
-        #         print(body, '\n', result)
-        #         push(body)
-        #     else:
-        #         click('Renew VPS')
-        # else:
-        #     print('- reCAPTCHA not found!')
-        #     click('Renew VPS')
-        result = str(extendResult())
+        body = str(extendResult())
         #print('result:', result)
-        if 'Robot verification failed' in result:
+        if 'Robot verification failed' in body:
             while renew < 10:
                 renew = renew+1
-                print('*** %s %d ***' % (result, renew))
+                print('*** %s %d ***' % (body, renew))
                 renewVPS()
-        elif 'renewed' in result:
-            result = '🎉 ' + result
-            print(result)
-        push(result)
+        elif 'renewed' in body:
+            body = '🎉 ' + body
+            print(body)
     else:
         print(' *** 💣 some error in func renew!, stop running ***')
         # screenshot()
@@ -337,20 +308,10 @@ def extendResult():
         result = [key.web_element.text for key in textList][0]
         #print('extendResult:', result)
         delay(1)
-        # # checkResult(result)
-        # if 'Robot verification failed' in result:
-        #     print('*** %s ***' % result)
-        #     renewVPS()
-        # elif 'renewed' in result:
-        #     result = '🎉 ' + result
-        #     print(result)
-        #     push(result)
         return result
     except Exception as e:
         print('extendResult Error:', e)
         screenshot()
-        # renewVPS()
-    # return result
 
 
 def push(body):
@@ -423,6 +384,7 @@ urlSpeech = urlDecode('aHR0cHM6Ly9zcGVlY2gtdG8tdGV4dC1kZW1vLm5nLmJsdWVtaXgubmV0'
 urlMJJ = urlDecode('aHR0cDovL21qanpwLmNm')
 block = False
 renew = 0
+body = ''
 
 print('- loading...')
 driver = uc.Chrome(use_subprocess=True)
@@ -431,3 +393,4 @@ set_driver(driver)
 go_to(urlLogin)
 delay(1)
 login()
+push(body)
