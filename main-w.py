@@ -165,8 +165,12 @@ def cloudflareDT():
 
 
 def login():
-    print('- login')
     delay(1)
+    if Text('Checking').exists():
+        print('- Security Checking...')
+        delay(10)
+
+    print('- login')
     # CF
     cloudflareDT()
     scroll_down(num_pixels=1000)
@@ -220,6 +224,9 @@ def submit():
     try:
         wait_until(Text('VPS Information').exists)
         print('- VPS Information found!')
+        textList = find_all(S('.col-sm-7'))
+        status = [key.web_element.text for key in textList][1]
+        print('- Status: ', status)
         go_to(urlRenew)
         renewVPS()
     except Exception as e:
@@ -282,6 +289,9 @@ def renewVPS():
         elif 'renewed' in body:
             body = '🎉 ' + body
             print(body)
+        # else:   # for local debug
+        #     print('*** !!! ***')
+        #     delay(300)
     else:
         print(' *** 💣 some error in func renew!, stop running ***')
         # screenshot()
@@ -289,7 +299,7 @@ def renewVPS():
 
 def extendResult():
     print('- waiting for extend result response')
-    delay(5)
+    delay(15)
     scroll_down(num_pixels=600)
     #if S('#response').exists():
     try:
