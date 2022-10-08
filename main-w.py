@@ -4,7 +4,6 @@
 import base64
 import os
 import ssl
-import sys
 import time
 import urllib
 import requests
@@ -49,14 +48,6 @@ except:
 
 def urlDecode(s):
     return str(base64.b64decode(s + '=' * (4 - len(s) % 4))).split('\'')[1]
-
-
-def scrollDown(key):
-    i = 0
-    while not S(key).exists():
-        scroll_down(num_pixels=100)
-        i = i + 1
-        print('- scroll down 100px * %d for searching S(\'%s\')' % (i, key))
 
 
 def speechToText():
@@ -229,6 +220,7 @@ def submit():
     try:
         wait_until(Text('VPS Information').exists)
         print('- VPS Information found!')
+        go_to(urlRenew)
         renewVPS()
     except Exception as e:
         print('submit Error:', e)
@@ -264,10 +256,9 @@ def screenshot():  # debug
 def renewVPS():
     global renew, body
     print('- renew VPS')
-    go_to(urlRenew)
+    #go_to(urlRenew)
     delay(1)
     cloudflareDT()
-    scrollDown('@submit_button')
     delay(1)
     if S('#web_address').exists():
         print('- fill web address')
@@ -277,7 +268,6 @@ def renewVPS():
         print('- fill captcha result')
         write(captcha, into=S('@captcha'))
         print('- check agreement')
-        scrollDown('@agreement')
         click(S('@agreement'))
         delay(1)
         click('Renew VPS')
@@ -287,6 +277,7 @@ def renewVPS():
             while renew < 10:
                 renew = renew+1
                 print('*** %s %d ***' % (body, renew))
+                refresh()
                 renewVPS()
         elif 'renewed' in body:
             body = '🎉 ' + body
