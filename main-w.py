@@ -387,6 +387,7 @@ body = ''
 print('- loading...')
 driver = uc.Chrome(use_subprocess=True)
 driver.set_window_size(785, 627)
+driver.set_page_load_timeout(15)
 set_driver(driver)
 go_to(urlLogin)
 delay(1)
