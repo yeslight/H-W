@@ -278,7 +278,8 @@ def renewVPS():
         click(S('@agreement'))
         delay(1)
         click('Renew VPS')
-        body = str(extendResult())
+        #body = str(extendResult())
+        extendResult()
         #print('result:', result)
         if 'Robot verification failed' in body:
             while renew < 10:
@@ -298,16 +299,17 @@ def renewVPS():
 
 
 def extendResult():
+    global body
     print('- waiting for extend result response')
     delay(15)
     scroll_down(num_pixels=600)
     #if S('#response').exists():
     try:
         textList = find_all(S('#response'))
-        result = [key.web_element.text for key in textList][0]
+        body = str([key.web_element.text for key in textList][0])
         #print('extendResult:', result)
         delay(1)
-        return result
+        #return result
     except Exception as e:
         print('extendResult Error:', e)
         screenshot()
