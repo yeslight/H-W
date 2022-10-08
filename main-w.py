@@ -92,7 +92,7 @@ def speechToText():
 
 
 def getAudioLink():
-    global block
+    global block, body
     print('- audio file link searching...')
     if Text('Alternatively, download audio as MP3').exists() or Text('或者以 MP3 格式下载音频').exists():
         block = False
@@ -134,7 +134,6 @@ def getAudioLink():
         textblock = S('.rc-doscaptcha-body-text').web_element.text
         #print(textblock)
         body = ' *** 💣 Possibly blocked by google! ***\n' + textblock
-        push(body)
         block = True
 
     elif not CheckBox('I\'m not a robot').is_checked() or CheckBox('我不是机器人').is_checked():
@@ -197,9 +196,7 @@ def login():
     # if Text('I\'m not a robot').exists() or Text('我不是机器人').exists():
         print('- reCAPTCHA found!')
         block = reCAPTCHA()
-        if block:
-            print('*** Possibly blocked by google! ***')
-        else:
+        if not block:
             submit()
 
     else:
@@ -390,6 +387,7 @@ body = ''
 print('- loading...')
 driver = uc.Chrome(use_subprocess=True)
 driver.set_window_size(785, 627)
+driver.set_page_load_timeout(15)
 set_driver(driver)
 go_to(urlLogin)
 delay(1)
