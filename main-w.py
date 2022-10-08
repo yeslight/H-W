@@ -280,7 +280,7 @@ def renewVPS():
         click('Renew VPS')
         #body = str(extendResult())
         extendResult()
-        #print('result:', result)
+        print('result:', body)
         if 'Robot verification failed' in body:
             while renew < 10:
                 renew = renew+1
