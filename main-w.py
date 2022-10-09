@@ -102,7 +102,7 @@ def speechToText():
     response = ''
     i = 0
     #while text == '':
-    while '. -' not in response:
+    while ' -' not in response:
         i = i + 1
         if i > 3:
             print('*** speechToText issue! ***')
