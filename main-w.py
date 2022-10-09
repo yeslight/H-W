@@ -7,6 +7,7 @@ import ssl
 import time
 import urllib
 import requests
+import subprocess
 import undetected_chromedriver as uc
 
 from helium import *
@@ -51,42 +52,40 @@ def urlDecode(s):
 
 def mp3ToWave():
     print('- Func mp3 to wave...')
-    # wave = AudioSegment.from_mp3(audioFile)
-    # wave.export(waveFile, format='wav')
-    # subprocess.call(['ffmpeg', '-i', audioFile, waveFile])
-    driver.tab_new(urlMp3ToWave)
-    delay(10)
-    driver.switch_to.window(driver.window_handles[1])
-    print('- Switched to window mp3 to wave')
-    try:
-        driver.switch_to.alert()
-        Alert.dismiss()
-        print('- Alert dismiss')
-    except:
-        pass
-    drag_file(os.getcwd() + audioFile, 'Drop files here')
-    delay(10)
-    print('- file uploaded')
-    delay(2)
-    wait_until(Text('Ready').exists)
-    print('- Ready')
-    click(Button('Convert'))
-    print('- Convert clicked')
-    delay(2)
-    wait_until(Text('Finished').exists)
-    print('- Convert finished')
-    src = Link('Download').href
-    print('- get src:', src)
-
-    # 下载音频文件
-    try:
-        urllib.request.urlretrieve(src, os.getcwd() + waveFile)
-    except Exception as e:
-        print('getWaveLink function Error: %s \n try again' % e)
-        urllib.request.urlretrieve(src, os.getcwd() + waveFile)
-    delay(4)
+    subprocess.call(['ffmpeg', '-i', os.getcwd() + audioFile, os.getcwd() + waveFile])
+    # driver.tab_new(urlMp3ToWave)
+    # delay(10)
+    # driver.switch_to.window(driver.window_handles[1])
+    # print('- Switched to window mp3 to wave')
+    # try:
+    #     driver.switch_to.alert()
+    #     Alert.dismiss()
+    #     print('- Alert dismiss')
+    # except:
+    #     pass
+    # drag_file(os.getcwd() + audioFile, 'Drop files here')
+    # delay(10)
+    # print('- file uploaded')
+    # delay(2)
+    # wait_until(Text('Ready').exists)
+    # print('- Ready')
+    # click(Button('Convert'))
+    # print('- Convert clicked')
+    # delay(2)
+    # wait_until(Text('Finished').exists)
+    # print('- Convert finished')
+    # src = Link('Download').href
+    # print('- get src:', src)
+    #
+    # # 下载音频文件
+    # try:
+    #     urllib.request.urlretrieve(src, os.getcwd() + waveFile)
+    # except Exception as e:
+    #     print('getWaveLink function Error: %s \n try again' % e)
+    #     urllib.request.urlretrieve(src, os.getcwd() + waveFile)
+    # delay(4)
     print('- Func mp3 to wave done!')
-    driver.close()
+    # driver.close()
 
 
 def speechToText():
@@ -440,7 +439,7 @@ urlLogin = urlDecode('aHR0cHM6Ly93b2lkZW4uaWQvbG9naW4=')
 urlRenew = urlDecode('aHR0cHM6Ly93b2lkZW4uaWQvdnBzLXJlbmV3Lw==')
 ##
 urlSpeech = urlDecode('aHR0cHM6Ly9henVyZS5taWNyb3NvZnQuY29tL2VuLXVzL3Byb2R1Y3RzL2NvZ25pdGl2ZS1zZXJ2aWNlcy9zcGVlY2gtdG8tdGV4dC8jZmVhdHVyZXM==')
-urlMp3ToWave = urlDecode('aHR0cHM6Ly9jb252ZXJ0aW8uY28vbXAzLXdhdi8=')
+#urlMp3ToWave = urlDecode('aHR0cHM6Ly9jb252ZXJ0aW8uY28vbXAzLXdhdi8=')
 urlMJJ = urlDecode('aHR0cDovL21qanpwLmNm')
 block = False
 renew = 0
