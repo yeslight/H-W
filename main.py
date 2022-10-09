@@ -86,9 +86,9 @@ def speechToText():
             pass
         textlist = find_all(S('#speechout'))
         response = [key.web_element.text for key in textlist][0]
-        print('response:', response)
+        print('- response:', response)
         text = response.split('-'*80)[1].split('\n')[1].replace('. ', '.')
-        print('text:', text)
+        print('- text:', text)
     driver.close()
     return text
 
@@ -107,7 +107,7 @@ def getAudioLink():
         try:
             urllib.request.urlretrieve(src, os.getcwd() + audioFile)
         except Exception as e:
-            print('getAudioLink function Error: %s \n try again' % e)
+            print('*** 💣 getAudioLink function Error: %s \n try again' % e)
             urllib.request.urlretrieve(src, os.getcwd() + audioFile)
         delay(4)
         text = speechToText()
@@ -170,7 +170,7 @@ def cloudflareDT():
         if i > 0:
             print('*** cloudflare 5s detection finish! ***')
     except Exception as e:
-        print('Error:', e)
+        print('*** 💣 Error:', e)
 
 
 def login():
@@ -239,7 +239,7 @@ def submit():
         go_to(urlRenew)
         renewVPS()
     except Exception as e:
-        print('submit Error:', e)
+        print('*** 💣 submit Error:', e)
         screenshot()  # debug
         body = e
 
@@ -288,14 +288,14 @@ def renewVPS():
         delay(1)
         click('Renew VPS')
         extendResult()
-        print('result:', body)
+        print('- result:', body)
     else:
         print(' *** 💣 some error in func renew!, stop running ***')
         # screenshot()
 
 def renewCheck():
     global renew, body
-    print('body now:', body)
+    #print('- body now:', body)
     if 'Robot verification failed' in body:
         while renew < 10:
             renew = renew + 1
@@ -304,7 +304,7 @@ def renewCheck():
             renewVPS()
     elif 'renewed' in body:
         body = '🎉 ' + body
-        print(body)
+        #print(body)
 
 def extendResult():
     global body
@@ -318,7 +318,7 @@ def extendResult():
         delay(1)
         #return result
     except Exception as e:
-        print('extendResult Error:', e)
+        print('*** 💣 extendResult Error:', e)
         screenshot()
 
 
