@@ -49,35 +49,81 @@ except:
 def urlDecode(s):
     return str(base64.b64decode(s + '=' * (4 - len(s) % 4))).split('\'')[1]
 
+def mp3ToWave():
+    print('- Func mp3 to wave...')
+    # wave = AudioSegment.from_mp3(audioFile)
+    # wave.export(waveFile, format='wav')
+    # subprocess.call(['ffmpeg', '-i', audioFile, waveFile])
+    driver.tab_new(urlMp3ToWave)
+    delay(10)
+    driver.switch_to.window(driver.window_handles[1])
+    print('- Switched to window mp3 to wave')
+    try:
+        driver.switch_to.alert()
+        Alert.dismiss()
+        print('- Alert dismiss')
+    except:
+        pass
+    drag_file(os.getcwd() + audioFile, 'Drop files here')
+    delay(10)
+    print('- file uploaded')
+    delay(2)
+    wait_until(Text('Ready').exists)
+    print('- Ready')
+    click(Button('Convert'))
+    print('- Convert clicked')
+    delay(2)
+    wait_until(Text('Finished').exists)
+    print('- Convert finished')
+    src = Link('Download').href
+    print('- get src:', src)
+
+    # 下载音频文件
+    try:
+        urllib.request.urlretrieve(src, os.getcwd() + waveFile)
+    except Exception as e:
+        print('getWaveLink function Error: %s \n try again' % e)
+        urllib.request.urlretrieve(src, os.getcwd() + waveFile)
+    delay(4)
+    print('- Func mp3 to wave done!')
+    driver.close()
+
 
 def speechToText():
+    mp3ToWave()
+    print('- Func SpeechToText')
     driver.tab_new(urlSpeech)
     delay(2)
     driver.switch_to.window(driver.window_handles[1])
-    set_driver(driver)
-    scroll_down(num_pixels=1500)
-    text = ''
+    print('- Switched to window SpeechToText')
+    #set_driver(driver)
+    wait_until(Text('Speech to text').exists)
+    scroll_down(num_pixels=1200)
+    response = ''
     i = 0
     #while text == '':
-    while ' ' not in text:
+    while '. -' not in response:
         i = i + 1
         if i > 3:
             print('*** speechToText issue! ***')
             break
-        attach_file(os.getcwd() + audioFile, 'Upload Audio File')
+        #attach_file(os.getcwd() + audioFile, to=S('#uploadbtn'))
+        driver.find_element(By.ID, 'fileinput').send_keys(os.getcwd() + waveFile)
         print('- waiting for transcribe')
-        delay(6)
-        driver.switch_to.window(driver.window_handles[1])
-        set_driver(driver)
+        delay(10)
         try:
             driver.switch_to.alert()
             Alert.accept()
             print('- Alert accept')
         except:
             pass
-        textlist = find_all(S('.tab-panels--tab-content'))
-        text = [key.web_element.text for key in textlist][0]
-        print('- get text:', text)
+        textlist = find_all(S('#speechout'))
+        response = [key.web_element.text for key in textlist][0]
+        print('response:', response)
+        text = response.split('-'*80)[1].split('\n')[1].replace('. ', '.')
+        print('text:', text)
+        # if '-'*80 not in text
+        # print('- get text:', text)
     driver.close()
     return text
 
@@ -263,6 +309,7 @@ def screenshot():  # debug
 def renewVPS():
     global renew, body
     print('- renew VPS')
+    print('body now:', body)
     #go_to(urlRenew)
     delay(1)
     cloudflareDT()
@@ -375,13 +422,15 @@ def funcCAPTCHA():
 
 
 audioFile = '/audio.mp3'
+waveFile = '/audio.wav'
 imgFile = '/capture.png'
 ##
 urlWrite = urlDecode('V29pZGVuLmlk')
 urlLogin = urlDecode('aHR0cHM6Ly93b2lkZW4uaWQvbG9naW4=')
 urlRenew = urlDecode('aHR0cHM6Ly93b2lkZW4uaWQvdnBzLXJlbmV3Lw==')
 ##
-urlSpeech = urlDecode('aHR0cHM6Ly9zcGVlY2gtdG8tdGV4dC1kZW1vLm5nLmJsdWVtaXgubmV0')
+urlSpeech = urlDecode('aHR0cHM6Ly9henVyZS5taWNyb3NvZnQuY29tL2VuLXVzL3Byb2R1Y3RzL2NvZ25pdGl2ZS1zZXJ2aWNlcy9zcGVlY2gtdG8tdGV4dC8jZmVhdHVyZXM==')
+urlMp3ToWave = urlDecode('aHR0cHM6Ly9jb252ZXJ0aW8uY28vbXAzLXdhdi8=')
 urlMJJ = urlDecode('aHR0cDovL21qanpwLmNm')
 block = False
 renew = 0
