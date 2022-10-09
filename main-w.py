@@ -53,39 +53,7 @@ def urlDecode(s):
 def mp3ToWave():
     print('- Func mp3 to wave...')
     subprocess.call(['ffmpeg', '-i', os.getcwd() + audioFile, os.getcwd() + waveFile])
-    # driver.tab_new(urlMp3ToWave)
-    # delay(10)
-    # driver.switch_to.window(driver.window_handles[1])
-    # print('- Switched to window mp3 to wave')
-    # try:
-    #     driver.switch_to.alert()
-    #     Alert.dismiss()
-    #     print('- Alert dismiss')
-    # except:
-    #     pass
-    # drag_file(os.getcwd() + audioFile, 'Drop files here')
-    # delay(10)
-    # print('- file uploaded')
-    # delay(2)
-    # wait_until(Text('Ready').exists)
-    # print('- Ready')
-    # click(Button('Convert'))
-    # print('- Convert clicked')
-    # delay(2)
-    # wait_until(Text('Finished').exists)
-    # print('- Convert finished')
-    # src = Link('Download').href
-    # print('- get src:', src)
-    #
-    # # 下载音频文件
-    # try:
-    #     urllib.request.urlretrieve(src, os.getcwd() + waveFile)
-    # except Exception as e:
-    #     print('getWaveLink function Error: %s \n try again' % e)
-    #     urllib.request.urlretrieve(src, os.getcwd() + waveFile)
-    # delay(4)
     print('- Func mp3 to wave done!')
-    # driver.close()
 
 
 def speechToText():
@@ -121,8 +89,6 @@ def speechToText():
         print('response:', response)
         text = response.split('-'*80)[1].split('\n')[1].replace('. ', '.')
         print('text:', text)
-        # if '-'*80 not in text
-        # print('- get text:', text)
     driver.close()
     return text
 
@@ -146,8 +112,6 @@ def getAudioLink():
         delay(4)
         text = speechToText()
         print('- waiting for switch to first window')
-        # 切回第一个 tab
-        # driver = get_driver()
         driver.switch_to.window(driver.window_handles[0])
         # delay(3)
         set_driver(driver)
@@ -325,18 +289,6 @@ def renewVPS():
         click('Renew VPS')
         extendResult()
         print('result:', body)
-        # if 'Robot verification failed' in body:
-        #     while renew < 10:
-        #         renew = renew+1
-        #         print('*** %s %d ***' % (body, renew))
-        #         refresh()
-        #         renewVPS()
-        # elif 'renewed' in body:
-        #     body = '🎉 ' + body
-        #     print(body)
-        # else:   # for local debug
-        #     print('*** !!! ***')
-        #     delay(300)
     else:
         print(' *** 💣 some error in func renew!, stop running ***')
         # screenshot()
@@ -359,7 +311,6 @@ def extendResult():
     print('- waiting for extend result response')
     delay(15)
     scroll_down(num_pixels=600)
-    #if S('#response').exists():
     try:
         textList = find_all(S('#response'))
         body = str([key.web_element.text for key in textList][0])
@@ -439,7 +390,6 @@ urlLogin = urlDecode('aHR0cHM6Ly93b2lkZW4uaWQvbG9naW4=')
 urlRenew = urlDecode('aHR0cHM6Ly93b2lkZW4uaWQvdnBzLXJlbmV3Lw==')
 ##
 urlSpeech = urlDecode('aHR0cHM6Ly9henVyZS5taWNyb3NvZnQuY29tL2VuLXVzL3Byb2R1Y3RzL2NvZ25pdGl2ZS1zZXJ2aWNlcy9zcGVlY2gtdG8tdGV4dC8jZmVhdHVyZXM==')
-#urlMp3ToWave = urlDecode('aHR0cHM6Ly9jb252ZXJ0aW8uY28vbXAzLXdhdi8=')
 urlMJJ = urlDecode('aHR0cDovL21qanpwLmNm')
 block = False
 renew = 0
