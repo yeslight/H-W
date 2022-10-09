@@ -307,9 +307,8 @@ def screenshot():  # debug
 
 
 def renewVPS():
-    global renew, body
+    global body
     print('- renew VPS')
-    print('body now:', body)
     #go_to(urlRenew)
     delay(1)
     cloudflareDT()
@@ -325,18 +324,17 @@ def renewVPS():
         click(S('@agreement'))
         delay(1)
         click('Renew VPS')
-        #body = str(extendResult())
         extendResult()
         print('result:', body)
-        if 'Robot verification failed' in body:
-            while renew < 10:
-                renew = renew+1
-                print('*** %s %d ***' % (body, renew))
-                refresh()
-                renewVPS()
-        elif 'renewed' in body:
-            body = '🎉 ' + body
-            print(body)
+        # if 'Robot verification failed' in body:
+        #     while renew < 10:
+        #         renew = renew+1
+        #         print('*** %s %d ***' % (body, renew))
+        #         refresh()
+        #         renewVPS()
+        # elif 'renewed' in body:
+        #     body = '🎉 ' + body
+        #     print(body)
         # else:   # for local debug
         #     print('*** !!! ***')
         #     delay(300)
@@ -344,6 +342,18 @@ def renewVPS():
         print(' *** 💣 some error in func renew!, stop running ***')
         # screenshot()
 
+def renewCheck():
+    global renew, body
+    print('body now:', body)
+    if 'Robot verification failed' in body:
+        while renew < 10:
+            renew = renew + 1
+            print('*** %s %d ***' % (body, renew))
+            refresh()
+            renewVPS()
+    elif 'renewed' in body:
+        body = '🎉 ' + body
+        print(body)
 
 def extendResult():
     global body
@@ -444,4 +454,5 @@ set_driver(driver)
 go_to(urlLogin)
 delay(1)
 login()
+renewCheck()
 push(body)
