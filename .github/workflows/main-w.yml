@@ -19,7 +19,7 @@ jobs:
           
         - name: 'reinstall Chrome & install ffmpeg'
           run: |
-            brew reinstall --cask google-chrome
+            brew upgrade --cask google-chrome
             brew install ffmpeg
 
         - name: 'Install requirements'
@@ -38,4 +38,4 @@ jobs:
             TG_USER_ID: ${{ secrets.TG_USER_ID }}
 
           run: |
-            python3 ./main-w.py
+            python3 ./main.py
