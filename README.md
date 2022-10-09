@@ -1,3 +1,5 @@
+[![W-Extend](https://github.com/MSE5/HAX/actions/workflows/main.yml/badge.svg)](https://github.com/MSE5/HAX/actions/workflows/main.yml)
+
 #### ✏️
 - 10.09
   - fix 原 speech to text 网站 gg，切换到 Azure
