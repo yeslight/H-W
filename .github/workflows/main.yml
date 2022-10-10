@@ -17,7 +17,7 @@ jobs:
         - name: 'Checkout codes'
           uses: actions/checkout@v2
           
-        - name: 'reinstall Chrome & install ffmpeg'
+        - name: 'upgrade Chrome & install ffmpeg'
           run: |
             brew upgrade --cask google-chrome
             brew install ffmpeg
