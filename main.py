@@ -52,7 +52,7 @@ def urlDecode(s):
 
 def mp3ToWave():
     print('- Func mp3 to wave...')
-    subprocess.call(['ffmpeg', '-i', os.getcwd() + audioFile, os.getcwd() + waveFile])
+    subprocess.call(['ffmpeg', '-i', os.getcwd() + audioFile, os.getcwd() + waveFile, '-loglevel', 'quiet', '-y'])
     print('- Func mp3 to wave done!')
 
 
