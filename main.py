@@ -63,13 +63,13 @@ def speechToText():
     delay(2)
     driver.switch_to.window(driver.window_handles[1])
     print('- Switched to window SpeechToText')
-    #set_driver(driver)
     wait_until(Text('Speech to text').exists)
     scroll_down(num_pixels=1200)
     response = ''
     i = 0
     #while text == '':
     while ' -' not in response:
+        # 这部分应该还可以完善
         i = i + 1
         if i > 3:
             print('*** speechToText issue! ***')
@@ -329,7 +329,7 @@ def push(body):
         print('*** No BARK_KEY ***')
     else:
         barkurl = 'https://api.day.app/' + BARK_KEY
-        title = 'W-Extend'
+        title = pushTitle
         rq_bark = requests.get(url=f'{barkurl}/{title}/{body}?isArchive=1')
         if rq_bark.status_code == 200:
             print('- bark push Done!')
@@ -339,7 +339,7 @@ def push(body):
     if TG_BOT_TOKEN == '' or TG_USER_ID == '':
         print('*** No TG_BOT_TOKEN or TG_USER_ID ***')
     else:
-        body = 'W-Extend\n\n' + body
+        body = pushTitle + '\n\n' + body
         server = 'https://api.telegram.org'
         tgurl = server + '/bot' + TG_BOT_TOKEN + '/sendMessage'
         rq_tg = requests.post(tgurl, data={'chat_id': TG_USER_ID, 'text': body}, headers={
@@ -384,6 +384,7 @@ def funcCAPTCHA():
 audioFile = '/audio.mp3'
 waveFile = '/audio.wav'
 imgFile = '/capture.png'
+pushTitle = 'W-Extend'
 ##
 urlWrite = urlDecode('V29pZGVuLmlk')
 urlLogin = urlDecode('aHR0cHM6Ly93b2lkZW4uaWQvbG9naW4=')
