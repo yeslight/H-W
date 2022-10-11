@@ -306,6 +306,9 @@ def renewCheck():
             print('*** %s %d ***' % (body, renew))
             refresh()
             renewVPS()
+            if 'renewed' in body:
+                body = '🎉 ' + body
+                break
     elif 'renewed' in body:
         body = '🎉 ' + body
         #print(body)
