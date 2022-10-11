@@ -17,6 +17,12 @@ from selenium.webdriver.common.by import By
 ssl._create_default_https_context = ssl._create_unverified_context
 
 try:
+    URL_BASE = os.environ['URL_BASE']
+except:
+    # 本地调试用， please type here the website address without any 'https://' or '/'
+    URL_BASE = ''
+
+try:
     USER_ID = os.environ['USER_ID']
 except:
     # 本地调试用
@@ -58,18 +64,16 @@ def mp3ToWave():
 
 def speechToText():
     mp3ToWave()
-    print('- Func SpeechToText')
-    driver.tab_new(urlSpeech)
-    delay(2)
-    driver.switch_to.window(driver.window_handles[1])
-    print('- Switched to window SpeechToText')
-    wait_until(Text('Speech to text').exists)
-    scroll_down(num_pixels=1200)
     response = ''
     i = 0
-    #while text == '':
     while ' -' not in response:
-        # 这部分应该还可以完善
+        print('- Func SpeechToText')
+        driver.tab_new(urlSpeech)
+        delay(2)
+        driver.switch_to.window(driver.window_handles[1])
+        print('- Switched to window SpeechToText')
+        wait_until(Text('Speech to text').exists)
+        scroll_down(num_pixels=1200)
         i = i + 1
         if i > 3:
             print('*** speechToText issue! ***')
@@ -278,7 +282,7 @@ def renewVPS():
     delay(1)
     if S('#web_address').exists():
         print('- fill web address')
-        write(urlWrite, into=S('#web_address'))
+        write(URL_BASE, into=S('#web_address'))
         # 过 CAPTCHA
         captcha = funcCAPTCHA()
         print('- fill captcha result')
@@ -287,7 +291,7 @@ def renewVPS():
         click(S('@agreement'))
         delay(1)
         click('Renew VPS')
-        extendResult()
+        body = extendResult()
         print('- result:', body)
     else:
         print(' *** 💣 some error in func renew!, stop running ***')
@@ -295,13 +299,16 @@ def renewVPS():
 
 def renewCheck():
     global renew, body
-    #print('- body now:', body)
+    print('- body now:', body)
     if 'Robot verification failed' in body:
         while renew < 10:
             renew = renew + 1
             print('*** %s %d ***' % (body, renew))
             refresh()
             renewVPS()
+            if 'renewed' in body:
+                body = '🎉 ' + body
+                break
     elif 'renewed' in body:
         body = '🎉 ' + body
         #print(body)
@@ -316,7 +323,7 @@ def extendResult():
         body = str([key.web_element.text for key in textList][0])
         #print('extendResult:', result)
         delay(1)
-        #return result
+        return body
     except Exception as e:
         print('*** 💣 extendResult Error:', e)
         screenshot()
@@ -329,7 +336,7 @@ def push(body):
         print('*** No BARK_KEY ***')
     else:
         barkurl = 'https://api.day.app/' + BARK_KEY
-        title = pushTitle
+        title = URL_BASE
         rq_bark = requests.get(url=f'{barkurl}/{title}/{body}?isArchive=1')
         if rq_bark.status_code == 200:
             print('- bark push Done!')
@@ -339,7 +346,7 @@ def push(body):
     if TG_BOT_TOKEN == '' or TG_USER_ID == '':
         print('*** No TG_BOT_TOKEN or TG_USER_ID ***')
     else:
-        body = pushTitle + '\n\n' + body
+        body = URL_BASE + '\n\n' + body
         server = 'https://api.telegram.org'
         tgurl = server + '/bot' + TG_BOT_TOKEN + '/sendMessage'
         rq_tg = requests.post(tgurl, data={'chat_id': TG_USER_ID, 'text': body}, headers={
@@ -381,14 +388,12 @@ def funcCAPTCHA():
     return captcha_result
 
 
-audioFile = '/audio.mp3'
-waveFile = '/audio.wav'
-imgFile = '/capture.png'
-pushTitle = 'W-Extend'
+audioFile = '/' + URL_BASE + '.mp3'
+waveFile = '/' + URL_BASE + '.wav'
+imgFile = '/' + URL_BASE + '.png'
 ##
-urlWrite = urlDecode('V29pZGVuLmlk')
-urlLogin = urlDecode('aHR0cHM6Ly93b2lkZW4uaWQvbG9naW4=')
-urlRenew = urlDecode('aHR0cHM6Ly93b2lkZW4uaWQvdnBzLXJlbmV3Lw==')
+urlLogin = 'https://' + URL_BASE + '/login'
+urlRenew = 'https://' + URL_BASE + '/vps-renew'
 ##
 urlSpeech = urlDecode('aHR0cHM6Ly9henVyZS5taWNyb3NvZnQuY29tL2VuLXVzL3Byb2R1Y3RzL2NvZ25pdGl2ZS1zZXJ2aWNlcy9zcGVlY2gtdG8tdGV4dC8jZmVhdHVyZXM==')
 urlMJJ = urlDecode('aHR0cDovL21qanpwLmNm')
@@ -397,12 +402,16 @@ renew = 0
 body = ''
 
 print('- loading...')
-driver = uc.Chrome(use_subprocess=True)
-driver.set_window_size(785, 627)
-driver.set_page_load_timeout(30)
-set_driver(driver)
-go_to(urlLogin)
-delay(1)
-login()
-renewCheck()
-push(body)
+if URL_BASE != '' and '/' not in URL_BASE:
+    driver = uc.Chrome(use_subprocess=True)
+    driver.set_window_size(785, 627)
+    driver.set_page_load_timeout(30)
+    set_driver(driver)
+    go_to(urlLogin)
+    delay(1)
+    login()
+    renewCheck()
+    push(body)
+else:
+    print('*** [URL_BASE] is missing or wrong! ***')
+
