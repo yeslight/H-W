@@ -291,7 +291,7 @@ def renewVPS():
         click(S('@agreement'))
         delay(1)
         click('Renew VPS')
-        extendResult()
+        body = extendResult()
         print('- result:', body)
     else:
         print(' *** 💣 some error in func renew!, stop running ***')
@@ -299,7 +299,7 @@ def renewVPS():
 
 def renewCheck():
     global renew, body
-    #print('- body now:', body)
+    print('- body now:', body)
     if 'Robot verification failed' in body:
         while renew < 10:
             renew = renew + 1
@@ -320,7 +320,7 @@ def extendResult():
         body = str([key.web_element.text for key in textList][0])
         #print('extendResult:', result)
         delay(1)
-        #return result
+        return body
     except Exception as e:
         print('*** 💣 extendResult Error:', e)
         screenshot()
