@@ -1,4 +1,4 @@
-name: 'W-Extend'
+name: 'Extend'
 
 on:
   #push:
@@ -29,8 +29,21 @@ jobs:
             yes | pip3 uninstall selenium
             pip3 install selenium==4.2.0
             
-        - name: 'Renew'
+        - name: 'Renew-H'
           env:
+            URL_BASE: ${{ secrets.URL_BASE_H }}
+            USER_ID: ${{ secrets.USER_ID }}
+            PASS_WD: ${{ secrets.PASS_WD }}
+            BARK_KEY: ${{ secrets.BARK_KEY }}
+            TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+            TG_USER_ID: ${{ secrets.TG_USER_ID }}
+
+          run: |
+            python3 ./main.py
+            
+        - name: 'Renew-W'
+          env:
+            URL_BASE: ${{ secrets.URL_BASE_W }}
             USER_ID: ${{ secrets.USER_ID }}
             PASS_WD: ${{ secrets.PASS_WD }}
             BARK_KEY: ${{ secrets.BARK_KEY }}
