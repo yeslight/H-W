@@ -1,6 +1,9 @@
 [![W-Extend](https://github.com/MSE5/HAX/actions/workflows/main.yml/badge.svg)](https://github.com/MSE5/HAX/actions/workflows/main.yml)
 
 #### ✏️
+- 10.11
+  - add URL_BASE，多个网址配置参考 `/.github/workflows/main.yml`
+  - fix renewCheck
 - 10.09
   - fix 原 speech to text 网站 gg，切换到 Azure
   - add ffmpeg mp3 to wav
@@ -11,7 +14,8 @@
 #### ㊙️
 
 |YOU SECRET NAME|YOU SECRET VALUE|
-|-----|-----|
+|-----|--|
+|`URL_BASE`|不要带有'https://' 或 '/'|
 |`USER_ID`|你的 id|
 |`PASS_WD`|你的密码|
 |`BARK_KEY`|(可选) https://api.day.app/BARK_KEY/|
