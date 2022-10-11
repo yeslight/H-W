@@ -15,7 +15,7 @@
 
 |YOU SECRET NAME|YOU SECRET VALUE|
 |-----|--|
-|`URL_BASE`|不要带有'https://' 或 '/'|
+|`URL_BASE`|网址，不要带有'https://' 或 '/'|
 |`USER_ID`|你的 id|
 |`PASS_WD`|你的密码|
 |`BARK_KEY`|(可选) https://api.day.app/BARK_KEY/|
