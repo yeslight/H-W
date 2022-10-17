@@ -124,13 +124,14 @@ def getAudioLink():
         write(text, into=S('#audio-response'))
         # delay(3)
         wait_until(S('#recaptcha-verify-button').exists)
-        print('- click recaptcha verify button')
+        print('- click recaptcha-verify-button')
         click(S('#recaptcha-verify-button'))
         delay(3)
         if Text('Multiple correct solutions required - please solve more.').exists() or Text(
                 '需要提供多个正确答案 - 请回答更多问题。').exists():
             print('*** Multiple correct solutions required - please solve more. ***')
-            click(S('#rc-button goog-inline-block rc-button-reload'))
+            print('- click recaptcha-reload-button')
+            click(S('#recaptcha-reload-button'))
             getAudioLink()
         delay(1)
 
