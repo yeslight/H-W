@@ -175,7 +175,7 @@ def cloudflareDT():
         if i > 0:
             print('*** cloudflare 5s detection finish! ***')
     except Exception as e:
-        print('*** 💣 Error:', e)
+        print('*** 💣 CFDT Error:', e)
 
 
 def login():
