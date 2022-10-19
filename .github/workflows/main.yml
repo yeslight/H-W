@@ -1,4 +1,4 @@
-name: 'Extend'
+name: 'H-W'
 
 on:
   #push:
@@ -9,8 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    #runs-on: macos-latest
+  H:
     runs-on: macos-12
 
     steps:
@@ -25,8 +24,7 @@ jobs:
             pip3 install undetected-chromedriver
             yes | pip3 uninstall selenium
             pip3 install selenium==4.2.0            
-
-            
+ 
         - name: 'Renew-H'
           env:
             URL_BASE: ${{ secrets.URL_BASE_H }}
@@ -39,6 +37,21 @@ jobs:
           run: |
             python3 ./main.py
             
+  W:
+    runs-on: macos-12
+
+    steps:
+        - name: 'Checkout codes'
+          uses: actions/checkout@v2
+          
+        - name: ' Environment Settings'
+          run: |
+            brew upgrade --cask google-chrome
+            brew install ffmpeg
+            pip3 install -r ./requirements.txt
+            pip3 install undetected-chromedriver
+            yes | pip3 uninstall selenium
+            pip3 install selenium==4.2.0      
         - name: 'Renew-W'
           env:
             URL_BASE: ${{ secrets.URL_BASE_W }}
