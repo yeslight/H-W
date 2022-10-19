@@ -185,8 +185,7 @@ def login():
         delay(10)
 
     print('- login')
-    # CF
-    cloudflareDT()
+    #cloudflareDT()
     scroll_down(num_pixels=1000)
     print('- fill user id')
     if USER_ID == '':
@@ -223,7 +222,7 @@ def submit():
     except Exception as e:
         print('*** 💣 some error in func submit!, stop running ***\nError:', e)
 
-    cloudflareDT()
+    #cloudflareDT()
     scroll_down(num_pixels=600)
     try:
         wait_until(Text('Please correct your captcha!.').exists)
