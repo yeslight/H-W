@@ -379,7 +379,7 @@ def funcCAPTCHA():
     print('- captcha result: %d %s %d = %s' % (number1, method, number2, captcha_result))
     return captcha_result
 
-
+##
 audioFile = '/' + URL_BASE + '.mp3'
 waveFile = '/' + URL_BASE + '.wav'
 imgFile = '/' + URL_BASE + '.png'
@@ -388,10 +388,11 @@ urlLogin = 'https://' + URL_BASE + '/login'
 urlRenew = 'https://' + URL_BASE + '/vps-renew'
 ##
 urlSpeech = urlDecode('aHR0cHM6Ly9henVyZS5taWNyb3NvZnQuY29tL2VuLXVzL3Byb2R1Y3RzL2NvZ25pdGl2ZS1zZXJ2aWNlcy9zcGVlY2gtdG8tdGV4dC8jZmVhdHVyZXM==')
-urlMJJ = urlDecode('aHR0cDovL21qanpwLmNm')
+##
 block = False
 renew = 0
 body = ''
+##
 
 print('- loading...')
 if URL_BASE != '' and '/' not in URL_BASE:
