@@ -255,22 +255,14 @@ def screenshot():  # debug
     driver = get_driver()
     driver.get_screenshot_as_file(os.getcwd() + imgFile)
     print('- screenshot done')
-    driver.tab_new(urlMJJ)
-    # driver.execute_script('''window.open('http://mjjzp.cf/',"_blank")''')
-    driver.switch_to.window(driver.window_handles[1])
-    delay(5)
-    driver.find_element(By.ID, 'image').send_keys(os.getcwd() + imgFile)
-    delay(5)
-    click('上传')
-    wait_until(Text('完成').exists)
-    print('- upload done')
-    # textList = find_all(S('#code-url'))
-    # result = [key.web_element.text for key in textList][0]
-    result = S('#code-url').web_element.text
-    print('*** 📷 capture src:', result)
-    push(result)
+    driver.execute_script('''window.open('http://imgur.com/upload',"_blank")''')
+    switch_to('Imgur')
+    time.sleep(5)
+    driver.find_element(By.ID, 'file-input').send_keys(os.getcwd() + imgFile)
+    time.sleep(5)
+    wait_until(Text('POST').exists)
+    print('- img uploaded and the 📷 capture src is:', driver.current_url)
     driver.close()
-    # driver.switch_to.window(driver.window_handles[0])
 
 
 def renewVPS():
