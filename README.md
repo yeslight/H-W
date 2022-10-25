@@ -1,6 +1,8 @@
 [![Extend](https://github.com/mybdye/H/actions/workflows/main.yml/badge.svg)](https://github.com/mybdye/H/actions/workflows/main.yml)
 
 #### ✏️
+- 10.26
+  - add version_main 
 - 10.11
   - add URL_BASE，多个网址配置参考 `/.github/workflows/main.yml`
   - fix renewCheck
