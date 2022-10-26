@@ -399,7 +399,7 @@ body = ''
 
 print('- loading...')
 if URL_BASE != '' and '/' not in URL_BASE:
-    driver = uc.Chrome(use_subprocess=True, version_main=105)
+    driver = uc.Chrome(use_subprocess=True)
     driver.set_window_size(785, 627)
     driver.set_page_load_timeout(30)
     set_driver(driver)
