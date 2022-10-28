@@ -272,9 +272,9 @@ def renewVPS():
     global body
     print('- renew VPS')
     #go_to(urlRenew)
-    delay(1)
-    cloudflareDT()
-    delay(1)
+    #delay(1)
+    #cloudflareDT()
+    delay(6)
     if S('#web_address').exists():
         print('- fill web address')
         write(URL_BASE, into=S('#web_address'))
