@@ -1,5 +1,22 @@
 [![Extend](https://github.com/mybdye/H/actions/workflows/main.yml/badge.svg)](https://github.com/mybdye/H/actions/workflows/main.yml)
-
+- 建议修改 schedule 
+`.github/workflows/main.yml` 中 
+```
+schedule:
+    # UTC (国内 UTC+8)
+    - cron: '03 02 */2 * *'   
+    # 每2天 10:03am 执行
+```
+```
+规则参考
+* * * * *
+| | | | |
+| | | | +----- day of week (0 - 7) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+| | | +------- month (1 - 12) OR jan,feb,mar,apr ...
+| | +--------- day of month (1 - 31)
+| +----------- hour (0 - 23)
++------------- minute (0 - 59)
+```
 #### ✏️
 - 10.26
   - add version_main 
