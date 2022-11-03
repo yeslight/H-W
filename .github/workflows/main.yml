@@ -1,16 +1,16 @@
 name: 'H-W'
 
 on:
-  push:
-    branches: [ "main" ]
+  #push:
+    #branches: [ "main" ]
   schedule:
     # UTC (国内 UTC+8)
-    - cron: '03 02 */2 * *'
+    - cron: '15 23 */2 * *'
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
-  H:
+  W1:
     runs-on: macos-12
     env:
       HOMEBREW_NO_INSTALL_CLEANUP: 1
@@ -29,9 +29,9 @@ jobs:
             yes | pip3 uninstall selenium
             pip3 install selenium==4.2.0            
  
-        - name: 'Renew-H'
+        - name: 'Renew-W'
           env:
-            URL_BASE: ${{ secrets.URL_BASE_H }}
+            URL_BASE: ${{ secrets.URL_BASE_W }}
             USER_ID: ${{ secrets.USER_ID }}
             PASS_WD: ${{ secrets.PASS_WD }}
             BARK_KEY: ${{ secrets.BARK_KEY }}
@@ -41,7 +41,7 @@ jobs:
           run: |
             python3 ./main.py
             
-  W:
+  W2:
     runs-on: macos-12
     env:
       HOMEBREW_NO_INSTALL_CLEANUP: 1
@@ -62,7 +62,7 @@ jobs:
         - name: 'Renew-W'
           env:
             URL_BASE: ${{ secrets.URL_BASE_W }}
-            USER_ID: ${{ secrets.USER_ID }}
+            USER_ID: ${{ secrets.USER_ID2 }}
             PASS_WD: ${{ secrets.PASS_WD }}
             BARK_KEY: ${{ secrets.BARK_KEY }}
             TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
